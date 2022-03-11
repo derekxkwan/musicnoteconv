@@ -52,7 +52,7 @@ def ndur_to_hz_ms(nstr2, bpm):
     dur = "4"
     nstr = "a4"
     if ":" in nstr2:
-        nstr, dur = nstr2.split(":")
+        nstr, dur = nstr2.split("|")
     hz = note_to_hz(nstr)
     ms = dur_to_ms(dur,bpm)
     return (hz,ms)
