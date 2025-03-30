@@ -1,10 +1,24 @@
+note_dict = {"c": 0, "d": 2, "e": 4, "f": 5, "g": 7, "a": 9, "b": 11}
+# (sharp, flat) tuples
+step_dict = {0: ('c','c'),
+             1: ('cs', 'df'),
+             2: ('d', 'd'),
+             3: ('ds', 'ef'),
+             4: ('e', 'e'),
+             5: ('f', 'f'),
+             6: ('fs', 'gf'),
+             7: ('g', 'g'),
+             8: ('gs', 'af'),
+             9: ('a','a'),
+             10: ('as', 'bf'),
+             11: ('b', 'b')}
+sign_dict = {"n": 0, "f": -1, "s": 1}
+
 def note_to_midi(nstr):
     nlower = nstr.lower()
     note = ""
     nsign = "n"
     octave = 0
-    ndict = {"c": 0, "d": 2, "e": 4, "f": 5, "g": 7, "a": 9, "b": 11}
-    sdict = {"n": 0, "f": -1, "s": 1}
     if len(nlower) == 2:
         note = nlower[0]
         octave = int(nlower[1])
@@ -12,8 +26,20 @@ def note_to_midi(nstr):
         note = nlower[0]
         nsign = nlower[1]
         octave = int(nlower[2])
-    midi = ndict.get(note, 0) + sdict.get(nsign, 0) + (octave+1)*12
+    midi = note_dict.get(note, 0) + sign_dict.get(nsign, 0) + (octave+1)*12
     return midi
+
+
+def midi_to_note(midinote, sharp = True):
+    octave = midinote//12 - 1
+    offset_from_c = int(midinote) % 12
+    cur_note = None
+    if sharp == True:
+        cur_note = step_dict[offset_from_c][0]
+    else:
+        cur_note = step_dict[offset_from_c][1]
+    ret = f'{cur_note}{octave}'
+    return ret
 
 def midi_to_hz(mnote):
     freq = 440.*(2.**(float(mnote-69.)/12.))
@@ -68,4 +94,3 @@ def ndurstr_to_hz_ms2(ndurstr, bpm):
         hzarr.append(hz)
         darr.append(ms)
     return hzarr, darr
-        
