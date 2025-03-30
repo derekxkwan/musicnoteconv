@@ -41,6 +41,18 @@ def midi_to_note(midinote, sharp = True):
     ret = f'{cur_note}{octave}'
     return ret
 
+# change cs4 to cs3 for example
+def change_note_octave(note, octave):
+    note_base = note[:-1]
+    return f'{note_base}{octave}'
+
+# tranpose a note by a certain amount to get a new note
+def transpose_note(note, tranpose_amt, sharp = True):
+    cur_midi = note_to_midi(note)
+    new_midi = cur_midi + tranpose_amt
+    new_note = midi_to_note(new_midi, sharp=sharp)
+    return new_note
+
 def midi_to_hz(mnote):
     freq = 440.*(2.**(float(mnote-69.)/12.))
     return freq
